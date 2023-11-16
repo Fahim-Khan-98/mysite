@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ Post List
+{% endblock %}
+
+{% block content %}
+
+{%for post in posts %}
+<p>Title: {{ post.title }} </p>   <p>Status: {{ post.status }} </p> 
+<p>Slug: {{ post.slug }} </p> 
+<p>Body: {{ post.body|truncatewords:15|linebreaks }} </p> 
+<p>Publish {{ post.publish }} By Author: {{ post.author }} </p> 
+
+<p>-----------</p>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,23 @@
+/* Apply styles to the content */
+#content {
+    float: left;
+    width: 70%; /* Adjust the width as needed */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Apply styles to the sidebar */
+#sidebar {
+    float: right;
+    width: 30%; /* Adjust the width as needed */
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #f4f4f4; /* Optional: Set a background color */
+}
+
+/* Clear the float to prevent layout issues */
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
