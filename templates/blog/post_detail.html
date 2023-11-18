@@ -6,10 +6,12 @@
 
 {% block content %}
 
-{%for post in posts %}
-<p>Title: {{ post.title }} </p>   <p>Status: {{ post.status }} </p> 
-<p>Body: {{ post.body|truncatewords:15|linebreaks }} </p> 
 
-{% endfor %}
+
+<p>Title: {{ post.title }} </p>   <p>Status: {{ post.status }} </p> 
+<p>Body: {{ post.body|linebreaks }} </p> 
+
+
 
 {% endblock %}
+
