@@ -8,9 +8,12 @@
 
 {%for post in posts %}
     {% if post.status != 'DF' %}
-        <a href="{% url 'blog:post_detail' post.id %}">
+        <!-- <a href="{% url 'blog:post_detail' post.id %}">
             {{ post.title }}
-            </a>
+            </a> -->
+            <a href="{{ post.get_absolute_url }}">
+                {{ post.title }}
+                </a>
         <p>Title: {{ post.title }} </p>   <p>Status: {{ post.status }} </p> 
         <p>Slug: {{ post.slug }} </p> 
         <p>Body: {{ post.body|truncatewords:15|linebreaks }} </p> 

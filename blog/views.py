@@ -13,12 +13,6 @@ def post_list(request):
     }
     return render(request, 'blog/post_list.html', context)
 
-# def publish_post_list(request):
-#     posts = Post.published.all()
-#     context={
-#         'posts' : posts
-#     }
-#     return render(request, 'blog/post_list.html', context)
 
 
 def post_detail(request, id):
