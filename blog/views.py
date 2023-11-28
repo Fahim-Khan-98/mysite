@@ -24,17 +24,10 @@ def post_share(request, post_id):
             cd = form.cleaned_data
             post_url = request.build_absolute_uri(posts.get_absolute_url())
             subject = f"{cd['name']} recomands you to read {posts.title}"
-            print(subject)
             message = f" read {posts.title} at {post_url} \n\n" \
-                       f"{cd['name']}\'s comments  {cd['comments']}"
-            print(message)
-            mail_sent = send_mail(subject, message, 'fahim.khancsebd@gmail.com', [cd['to']])
-            # ... send email
-            print(mail_sent)
-            if mail_sent:
-                sent = True
-        # else:
-        #     form = EmailPostForm()
+                       f"{cd['name']}\'s comments :  {cd['comments']}"
+            send_mail(subject, message, 'fahim.khancsebd@gmail.com', [cd['to']])
+            sent = True
 
     context={
         'posts' : posts,
