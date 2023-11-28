@@ -6,69 +6,43 @@ from django.views.generic import ListView
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from .models import Post
 from .forms import EmailPostForm
+from django.conf import settings
 from django.core.mail import send_mail
 # Create your views here.
 
 
-# def post_share(request, post_id):
-#     posts = get_object_or_404(Post, id = post_id, status=Post.Status.PUBLISHED)
-#     sent=False
-#     form = EmailPostForm() 
-
-#     if request.method == 'POST':
-#         #form was submitted
-#         form = EmailPostForm(request.POST)
-#         if form.is_valid():
-#             # Form fields passed validation
-#             cd = form.cleaned_data
-#             post_url = request.build_absolute_uri(posts.get_absolute_url())
-#             subject = f"{cd['name']} recomands you to read {posts.title}"
-#             print(subject)
-#             message = f" read {posts.title} at {post_url} \n\n" \
-#                        f"{cd['name']}\'s comments  {cd['comments']}"
-#             print(message)
-#             mail_sent = send_mail(subject, message, 'fahim.khancsebd@gmail.com', [cd['to']])
-#             # ... send email
-#             print(mail_sent)
-#             if mail_sent:
-#                 sent = True
-#         # else:
-#         #     form = EmailPostForm()
-
-#     context={
-#         'posts' : posts,
-#         'form' : form,
-#         'sent' : sent
-
-#          }
-#     return render(request, 'blog/posts/share.html', context)
-
-
 def post_share(request, post_id):
-    posts = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
-    sent = False
-    form = EmailPostForm()  # Initialize the form outside the if block
+    posts = get_object_or_404(Post, id = post_id, status=Post.Status.PUBLISHED)
+    sent=False
+    form = EmailPostForm() 
 
     if request.method == 'POST':
-        # Form was submitted
+        #form was submitted
         form = EmailPostForm(request.POST)
         if form.is_valid():
             # Form fields passed validation
             cd = form.cleaned_data
             post_url = request.build_absolute_uri(posts.get_absolute_url())
-            subject = f"{cd['name']} recommends you to read {posts.title}"
-            message = f"Read {posts.title} at {post_url}\n\n" \
-                      f"{cd['name']}'s comments: {cd['comments']}"
-            send_mail(subject, message, 'fahim.khancsebd@gmail.com', [cd['to']])
+            subject = f"{cd['name']} recomands you to read {posts.title}"
+            print(subject)
+            message = f" read {posts.title} at {post_url} \n\n" \
+                       f"{cd['name']}\'s comments  {cd['comments']}"
+            print(message)
+            mail_sent = send_mail(subject, message, 'fahim.khancsebd@gmail.com', [cd['to']])
             # ... send email
-            sent = True
+            print(mail_sent)
+            if mail_sent:
+                sent = True
+        # else:
+        #     form = EmailPostForm()
 
-    return render(request, 'blog/posts/share.html', {
-        'posts': posts,
-        'form': form,
-        'sent': sent
-    })
+    context={
+        'posts' : posts,
+        'form' : form,
+        'sent' : sent
 
+         }
+    return render(request, 'blog/posts/share.html', context)
 
 # def post_list(request):
 #     post_list = Post.objects.all()
