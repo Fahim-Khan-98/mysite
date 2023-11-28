@@ -11,7 +11,9 @@
 <p>Title: {{ post.title }} </p>   <p>Status: {{ post.status }} </p> 
 <p>Body: {{ post.body|linebreaks }} </p> 
 
-
+<p>
+    <a href="{% url 'blog:post_share' post.id %}">Share Post</a>
+</p>
 
 {% endblock %}
 

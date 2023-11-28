@@ -5,19 +5,17 @@
 {% endblock %}
 
 {% block content %}
-<!-- 
-{%for post in posts %}
 
-            <a href="{{ post.get_absolute_url }}">
-                {{ post.title }}
-                </a>
-        <p>Title: {{ post.title }} </p>   <p>Status: {{ post.status }} </p> 
-        <p>Slug: {{ post.slug }} </p> 
-        <p>Body: {{ post.body|truncatewords:15|linebreaks }} </p> 
-        <p>Publish {{ post.publish }} By Author: {{ post.author }} </p> 
-
-
-{% endfor %} -->
-Share Posts Page
+    {% if sent %}
+        <h1>E-mail successfully sent</h1>
+        <p> {{ posts.title }} was successfully sent to {{form.cleaned_data.to}} </p>
+     {% else %}
+        <h1> Share "{{ posts.title }} " by E-mail</h1>
+        <form method="post">
+                {{ form.as_p  }}
+            {% csrf_token %}
+            <input type="submit" value="Sent e-mail">
+        </form>
+     {% endif %}
 
 {% endblock %}
