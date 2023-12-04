@@ -4,8 +4,8 @@ from django.shortcuts import render, get_object_or_404
 from django.http import Http404
 from django.views.generic import ListView
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
-from .models import Post
-from .forms import EmailPostForm
+from .models import Post, Comment
+from .forms import EmailPostForm, CommentForm
 from django.conf import settings
 from django.core.mail import send_mail
 # Create your views here.
@@ -25,6 +25,7 @@ def post_share(request, post_id):
             post_url = request.build_absolute_uri(posts.get_absolute_url())
             subject = f"{cd['name']} recomands you to read {posts.title}"
             message = f" read {posts.title} at {post_url} \n\n" \
+                      f" Body : {posts.body} \n\n" \
                        f"{cd['name']}\'s comments :  {cd['comments']}"
             send_mail(subject, message, 'fahim.khancsebd@gmail.com', [cd['to']])
             sent = True
@@ -70,11 +71,43 @@ class PostListView(ListView):
 
 
 
-def post_detail(request, id):
-    post = get_object_or_404(Post, id=id, status=Post.Status.PUBLISHED)
+# def post_detail(request, id):
+#     post = get_object_or_404(Post, id=id, status=Post.Status.PUBLISHED)
+#     context={
+#         'post' : post,
+
+#     }
+#     return render(request,'blog/post_detail.html',context)
+    #   publish__year=year,
+    #                             publish__month=month,
+    #                             publish__day=day
+
+def post_detail(request, post):
+    post = get_object_or_404(Post, status=Post.Status.PUBLISHED, slug=post)
+     # List of active comments for this post
+    comments = post.comments.filter(active=True)
+    # Form for users to comment
+    form = CommentForm()
     context={
         'post' : post,
+        'comments': comments,
+        'form':form,
 
     }
     return render(request,'blog/post_detail.html',context)
+
+
+def post_comment(request, post_id):
+    post = get_object_or_404(Comment, id = post_id, status=Post.Status.PUBLISHED)
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        # Create a Comment object without saving it to the database
+        comment = form.save(commit=False)
+        # Assign the post_comment to the comment
+        comment.post = post
+    context = {'post': post,
+                'form': form,
+                'comment': comment
+            }
+    return render(request, 'blog/posts/comment.html', context)
 
