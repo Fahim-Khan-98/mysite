@@ -70,6 +70,21 @@ class PostListView(ListView):
         return queryset
 
 
+# Un-nessery codes
+# def post_detail(request, id):
+#     post = get_object_or_404(Post, id=id, status=Post.Status.PUBLISHED)
+#     context={
+#         'post' : post,
+
+#     }
+#     return render(request,'blog/post_detail.html',context)
+    #   publish__year=year,
+    #                             publish__month=month,
+    #                             publish__day=day
+
+
+
+
 
 # def post_detail(request, id):
 #     post = get_object_or_404(Post, id=id, status=Post.Status.PUBLISHED)
