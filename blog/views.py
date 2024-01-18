@@ -97,6 +97,8 @@ class PostListView(ListView):
     #                             publish__month=month,
     #                             publish__day=day
 
+
+# Test
 def post_detail(request, post):
     post = get_object_or_404(Post, status=Post.Status.PUBLISHED, slug=post)
      # List of active comments for this post
@@ -113,7 +115,7 @@ def post_detail(request, post):
 
 
 def post_comment(request, post_id):
-    post = get_object_or_404(Comment, id = post_id, status=Post.Status.PUBLISHED)
+    post = get_object_or_404(Post, id = post_id, status=Post.Status.PUBLISHED)
     form = CommentForm(request.POST)
     if form.is_valid():
         # Create a Comment object without saving it to the database
