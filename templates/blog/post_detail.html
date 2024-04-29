@@ -9,6 +9,7 @@
 
 
 <p>Title: {{ post.title }} </p>   <p>Status: {{ post.status }} </p> 
+<p class="tags">Tags: {{ post.tags.all|join:"," }}</p>
 <p>Publish Date: {{ post.publish }} </p>  <p>Created Date: {{ post.created }} </p> 
 <p>Body: {{ post.body|linebreaks }} </p> 
 
