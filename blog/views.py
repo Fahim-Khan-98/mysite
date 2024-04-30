@@ -8,6 +8,7 @@ from .models import Post, Comment
 from .forms import EmailPostForm, CommentForm
 from django.conf import settings
 from django.core.mail import send_mail
+from taggit.models import Tag
 # Create your views here.
 
 
@@ -38,24 +39,29 @@ def post_share(request, post_id):
          }
     return render(request, 'blog/posts/share.html', context)
 
-# def post_list(request):
-#     post_list = Post.objects.all()
-#     # Pagination with 3 posts per page
-#     paginator = Paginator(post_list,3)
-#     page_number = request.GET.get('page',1)
-#     try:
-#         posts = paginator.page(page_number)
-#     except PageNotAnInteger:
-#         # If page_number is not an integer deliver the first page
-#         posts = paginator.page(1)
+def post_list(request, tag_slug=None):
+    post_list = Post.objects.all()
+    # Pagination with 3 posts per page
+    tag=None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        post_list = post_list.filter(tags__in=[tag])
+    paginator = Paginator(post_list,3)
+    page_number = request.GET.get('page',1)
+    try:
+        posts = paginator.page(page_number)
+    except PageNotAnInteger:
+        # If page_number is not an integer deliver the first page
+        posts = paginator.page(1)
 
-#     except EmptyPage:
-#          # If page_number is out of range deliver last page of results
-#          posts = paginator.page(paginator.num_pages)
-#     context={
-#         'posts' : posts
-#     }
-#     return render(request, 'blog/post_list.html', context)
+    except EmptyPage:
+         # If page_number is out of range deliver last page of results
+         posts = paginator.page(paginator.num_pages)
+    context={
+        'posts' : posts,
+        'tag' : tag
+    }
+    return render(request, 'blog/post_list.html', context)
 
 
 class PostListView(ListView):
