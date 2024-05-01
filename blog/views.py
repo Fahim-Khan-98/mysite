@@ -9,6 +9,7 @@ from .forms import EmailPostForm, CommentForm
 from django.conf import settings
 from django.core.mail import send_mail
 from taggit.models import Tag
+from django.db.models import Count
 # Create your views here.
 
 
@@ -111,10 +112,26 @@ def post_detail(request, post):
     comments = post.comments.filter(active=True)
     # Form for users to comment
     form = CommentForm()
+    #List of similar posts
+    # post_tag_ids = post.tags.values_list('id', flat=True)
+    # similiar_posts = post.published.filter(tags__in = post_tag_ids)\
+    #                                        .exclude(id=post.id)
+    # similiar_posts = similiar_posts.annotate(same_tags=Count('tags'))\
+    #                     .order_by('-same_tags', '-publish')[:4]
+
+    # List of similar posts
+    post_tag_ids = post.tags.values_list('id', flat=True)
+    similar_posts = Post.objects.filter(tags__id__in=post_tag_ids)\
+                                 .exclude(id=post.id)\
+                                 .annotate(same_tags=Count('tags'))\
+                                 .order_by('-same_tags', '-publish')[:4]
+
+
     context={
         'post' : post,
         'comments': comments,
         'form':form,
+        'similar_posts' : similar_posts,
 
     }
     return render(request,'blog/post_detail.html',context)
