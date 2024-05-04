@@ -112,12 +112,6 @@ def post_detail(request, post):
     comments = post.comments.filter(active=True)
     # Form for users to comment
     form = CommentForm()
-    #List of similar posts
-    # post_tag_ids = post.tags.values_list('id', flat=True)
-    # similiar_posts = post.published.filter(tags__in = post_tag_ids)\
-    #                                        .exclude(id=post.id)
-    # similiar_posts = similiar_posts.annotate(same_tags=Count('tags'))\
-    #                     .order_by('-same_tags', '-publish')[:4]
 
     # List of similar posts
     post_tag_ids = post.tags.values_list('id', flat=True)
@@ -145,6 +139,7 @@ def post_comment(request, post_id):
         comment = form.save(commit=False)
         # Assign the post_comment to the comment
         comment.post = post
+        
     context = {'post': post,
                 'form': form,
                 'comment': comment
