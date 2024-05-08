@@ -6,6 +6,19 @@
 
 {% block content %}
 
+<h1>You can search here By "title" and "slug"</h1>
+<!-- Search Form -->
+<form method="GET" action="{% url 'blog:post_list' %}">
+    <input type="text" name="q" placeholder="Search...">
+  <button type="submit">Search</button>
+</form>
+
+<!-- Display Search Query -->
+{% if search_query %}
+    <p>Search results for: "{{ search_query }}"</p>
+{% endif %}
+
+
 <h1>My Blog</h1>
   {%if tag %}
      <h2> Posts tag with "{{ tag.name }}" </h2>

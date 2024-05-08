@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load blog_tags %}
 
 {% block title %}
  Post Detail
@@ -11,7 +12,7 @@
 <p>Title: {{ post.title }} </p>   <p>Status: {{ post.status }} </p> 
 <p class="tags">Tags: {{ post.tags.all|join:"," }}</p>
 <p>Publish Date: {{ post.publish }} </p>  <p>Created Date: {{ post.created }} </p> 
-<p>Body: {{ post.body|linebreaks }} </p> 
+<p>Body: {{ post.body|markdown|linebreaks }} </p> 
 
 <p>
     <a href="{% url 'blog:post_share' post.id %}">Share Post</a>

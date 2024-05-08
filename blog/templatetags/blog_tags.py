@@ -30,3 +30,9 @@ def get_most_commented_posts(count=5):
 #    # Assuming you want to find the post with the maximum total number of comments
 #    post_with_max_comments = Post.published.annotate(total_comments=Count('comments')).order_by('-total_comments')[:count]
 #    return {'post_with_max_comments': post_with_max_comments}
+
+
+
+@register.filter(name='markdown')
+def markdown_format(text):
+   return mark_safe(markdown.markdown(text))

@@ -10,6 +10,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from taggit.models import Tag
 from django.db.models import Count
+from django.db.models import Q
 # Create your views here.
 
 
@@ -42,6 +43,12 @@ def post_share(request, post_id):
 
 def post_list(request, tag_slug=None):
     post_list = Post.objects.all()
+    # Check if there is a search query
+    search_query =  request.GET.get('q') if request.GET.get('q') != None else ''
+    if search_query:
+        post_list = post_list.filter(Q(title__icontains=search_query)|
+                                     Q(slug__icontains=search_query)
+                                     )
     # Pagination with 3 posts per page
     tag=None
     if tag_slug:
@@ -60,7 +67,8 @@ def post_list(request, tag_slug=None):
          posts = paginator.page(paginator.num_pages)
     context={
         'posts' : posts,
-        'tag' : tag
+        'tag' : tag,
+        'search_query': search_query
     }
     return render(request, 'blog/post_list.html', context)
 
